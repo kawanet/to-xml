@@ -1,0 +1,16 @@
+{
+  "name": "to-xml",
+  "version": "1.0.0",
+  "description": "toXML",
+  "main": "to-xml.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "@kawanet",
+  "license": "MIT",
+  "devDependencies": {
+    "jshint": "^2.9.4",
+    "mocha": "^3.1.2",
+    "uglify-js": "^2.7.3"
+  }
+}
