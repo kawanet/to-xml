@@ -6,8 +6,7 @@
 
 - Simple: single function `toXML()` returns XML string.
 - Small: 1.3KB minified. less than 1KB gziped.
-- Pure JavaScript: No dependency nor DOM needed.
-- Fast: try it, anyway.
+- Pure JavaScript: no dependency nor DOM needed.
 
 ## Usage
 
@@ -21,7 +20,7 @@ Browser:
 
 ```html
 <script src="https://rawgit.com/kawanet/to-xml/master/dist/to-xml.min.js"></script>
-````
+```
 
 JavaScript: `toXML()` returns the String.
 
@@ -29,7 +28,9 @@ JavaScript: `toXML()` returns the String.
 var xml = toXML({
   "xml": {
     "@foo": "FOO",
-    "bar": "BAR"
+    "bar": {
+      "baz": "BAZ"
+    }
   }
 });
 ```
@@ -37,7 +38,7 @@ var xml = toXML({
 XML:
 
 ```xml
-<xml foo="FOO"><bar>BAR</bar></xml>
+<xml foo="FOO"><bar><baz>BAZ</baz></bar></xml>
 ```
 
 ### Pretty Printing
@@ -48,7 +49,9 @@ JavaScript: default indent level is 0.
 var xml = toXML({
   "xml": {
     "@foo": "FOO",
-    "bar": "BAR"
+    "bar": {
+      "baz": "BAZ"
+    }
   }
 }, {indent: 2});
 ```
@@ -57,9 +60,11 @@ XML:
 
 ```xml
 <xml foo="FOO">
-  <bar>BAR</bar>
+  <bar>
+    <baz>BAZ</baz>
+  </bar>
 </xml>
-````
+```
 
 ### Empty Element
 
