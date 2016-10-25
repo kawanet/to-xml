@@ -1,6 +1,6 @@
 {
   "name": "to-xml",
-  "description": "toXML - JavaScript Object to XML",
+  "description": "toXML - Pure JavaScript XML Writer",
   "version": "0.1.0",
   "author": "Yusuke Kawasaki <u-suke@kawa.net>",
   "bugs": {
@@ -16,6 +16,7 @@
     "json",
     "serialize",
     "stringify",
+    "writer",
     "xml"
   ],
   "license": "MIT",
@@ -26,6 +27,8 @@
   },
   "scripts": {
     "build": "make",
-    "test": "make test"
+    "fixpack": "fixpack",
+    "test": "make test",
+    "test-watch": "while :; do make test; sleep 1; done"
   }
 }

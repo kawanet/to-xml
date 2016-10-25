@@ -4,9 +4,9 @@
 
 ## Features
 
-- Simple: single function `toXML()` returns XML string.
-- Small: 1.3KB minified. less than 1KB gziped.
-- Pure JavaScript: no dependency nor DOM needed.
+- Simple: single function `toXML()` which returns XML string.
+- Small: 1.3KB minified, less than 1KB gzipped.
+- Standalone: no dependency module nor DOM needed.
 
 ## Usage
 
@@ -198,16 +198,13 @@ XML: child nodes in order
 
 ### NPM
 
-- [https://www.npmjs.com/package/to-xml](https://www.npmjs.com/package/to-xml)
+- [https://www.npmjs.com/package/from-xml](https://www.npmjs.com/package/from-xml) - XML Parser
+- [https://www.npmjs.com/package/to-xml](https://www.npmjs.com/package/to-xml) - XML Writer
+- [https://www.npmjs.com/package/xml-objtree](https://www.npmjs.com/package/xml-objtree)
 
 ### GitHub
 
 - [https://github.com/kawanet/to-xml](https://github.com/kawanet/to-xml)
-
-### XML.ObjTree
-
-- [http://www.kawa.net/works/js/xml/objtree-e.html](http://www.kawa.net/works/js/xml/objtree-e.html)
-- [https://www.npmjs.com/package/xml-objtree](https://www.npmjs.com/package/xml-objtree)
 
 ## LICENSE
 
