@@ -117,10 +117,19 @@ var toXML;
       // attributes
       attrs.forEach(function(key) {
         var val = value[key];
+
+        // replacer
+        var f = buf.f;
+        if (f) val = f(key, val);
+        if ("undefined" === typeof val) return;
+
+        // attribute name
         buf.r += ' ' + key.substr(1);
-        if (val !== null) {
-          buf.r += '="' + escapeXML(val) + '"';
-        }
+
+        // property attribute
+        if (val === null) return;
+
+        buf.r += '="' + escapeXML(val) + '"';
       });
 
       // empty element

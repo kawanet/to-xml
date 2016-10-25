@@ -115,4 +115,38 @@ describe("toXML", function() {
     assert.equal(toXML({xml: 'L<G>A&Q"'}), '<xml>L&lt;G&gt;A&amp;Q&quot;</xml>');
     assert.equal(toXML({xml: {"@attr": 'L<G>A&Q"'}}), '<xml attr="L&lt;G&gt;A&amp;Q&quot;"/>');
   });
+
+  it("replacer", function() {
+    assert.equal(JSON.stringify({foo: {"bar": "BAR", "baz": "BAZ"}}, bazLower),
+      '{"foo":{"bar":"BAR","baz":"baz"}}');
+    assert.equal(toXML({foo: {"bar": "BAR", "baz": "BAZ"}}, bazLower),
+      '<foo><bar>BAR</bar><baz>baz</baz></foo>');
+    assert.equal(toXML({foo: {"@bar": "BAR", "@baz": "BAZ"}}, bazLower),
+      '<foo bar="BAR" baz="baz"/>');
+
+    function bazLower(key, val) {
+      if (key && key.indexOf("baz") > -1) {
+        return String.prototype.toLowerCase.call(val);
+      }
+      return val;
+    }
+
+    assert.equal(JSON.stringify({foo: {"bar": "BAR", "baz": "BAZ"}}, barIgnore),
+      '{"foo":{"baz":"BAZ"}}');
+    assert.equal(toXML({foo: {"bar": "BAR", "baz": "BAZ"}}, barIgnore),
+      '<foo><baz>BAZ</baz></foo>');
+    assert.equal(toXML({foo: {"@bar": "BAR", "@baz": "BAZ"}}, barIgnore),
+      '<foo baz="BAZ"/>');
+
+    function barIgnore(key, val) {
+      if (key && key.indexOf("bar") > -1) return; // undefined
+      return val;
+    }
+
+    // escaping should work also with replacer
+    assert.equal(toXML({foo: {"@bar": 'L<G>A&Q"', "baz": 'L<G>A&Q"'}}, barIgnore),
+      '<foo><baz>L&lt;G&gt;A&amp;Q&quot;</baz></foo>');
+    assert.equal(toXML({foo: {"bar": 'L<G>A&Q"', "@baz": 'L<G>A&Q"'}}, barIgnore),
+      '<foo baz="L&lt;G&gt;A&amp;Q&quot;"></foo>');
+  });
 });
