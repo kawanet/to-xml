@@ -92,6 +92,27 @@ XML: empty element
 </xml>
 ```
 
+### Empty Attribute
+
+JavaScript: null
+
+```js
+var xml = toXML({
+  "xml": {
+    "@bar": null,
+    "foo": "FOO"
+  }
+}, null, 2)
+```
+
+XML: empty attribute
+
+```xml
+<xml bar>
+  <foo>FOO</foo>
+</xml>
+```
+
 ### Multiple Child Nodes
 
 JavaScript: Array 

@@ -98,9 +98,14 @@ var toXML;
     if (hasTag) {
       if (hasIndent) buf.r += buf.l;
       buf.r += '<' + tag;
+
+      // attributes
       attrs.forEach(function(key) {
-        var val = escapeXML(value[key]);
-        buf.r += ' ' + key.substr(1) + '="' + val + '"';
+        var val = value[key];
+        buf.r += ' ' + key.substr(1);
+        if (val !== null) {
+          buf.r += '="' + escapeXML(val) + '"';
+        }
       });
 
       // empty element
@@ -109,6 +114,7 @@ var toXML;
         if (hasIndent) buf.r += LF;
         return;
       }
+
       buf.r += '>';
       if (hasIndent) buf.r += LF;
     }

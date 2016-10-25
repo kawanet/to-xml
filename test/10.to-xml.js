@@ -49,6 +49,8 @@ describe("toXML", function() {
     assert.equal(toXML({a: {"@b": "B", "@c": "C"}}), '<a b="B" c="C"/>');
     assert.equal(toXML({a: {"@b": "B", c: "C"}}), '<a b="B"><c>C</c></a>');
     assert.equal(toXML({a: {"@b": "B", "": "C"}}), '<a b="B">C</a>');
+    assert.equal(toXML({a: {"@b": null}}), '<a b/>');
+    assert.equal(toXML({a: {"@b": null, "": "C"}}), '<a b>C</a>');
   });
 
   it("array", function() {
