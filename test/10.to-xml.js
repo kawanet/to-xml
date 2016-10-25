@@ -61,15 +61,15 @@ describe("toXML", function() {
   });
 
   it("indent", function() {
-    assert.equal(toXML({xml: "string"}, {indent: 1}), "<xml>string</xml>\n");
-    assert.equal(toXML({a: {b: "B"}}, {indent: 1}), "<a>\n <b>B</b>\n</a>\n");
-    assert.equal(toXML({a: {b: {c: "C"}}}, {indent: 1}), "<a>\n <b>\n  <c>C</c>\n </b>\n</a>\n");
-    assert.equal(toXML({xml: "string"}, {indent: 2}), "<xml>string</xml>\n");
-    assert.equal(toXML({a: {b: "B"}}, {indent: 2}), "<a>\n  <b>B</b>\n</a>\n");
-    assert.equal(toXML({a: {b: {c: "C"}}}, {indent: 2}), "<a>\n  <b>\n    <c>C</c>\n  </b>\n</a>\n");
-    assert.equal(toXML({xml: "string"}, {indent: "  "}), "<xml>string</xml>\n");
-    assert.equal(toXML({a: {b: "B"}}, {indent: "  "}), "<a>\n  <b>B</b>\n</a>\n");
-    assert.equal(toXML({a: {b: {c: "C"}}}, {indent: "  "}), "<a>\n  <b>\n    <c>C</c>\n  </b>\n</a>\n");
+    assert.equal(toXML({xml: "string"}, null, 1), "<xml>string</xml>\n");
+    assert.equal(toXML({a: {b: "B"}}, null, 1), "<a>\n <b>B</b>\n</a>\n");
+    assert.equal(toXML({a: {b: {c: "C"}}}, null, 1), "<a>\n <b>\n  <c>C</c>\n </b>\n</a>\n");
+    assert.equal(toXML({xml: "string"}, null, 2), "<xml>string</xml>\n");
+    assert.equal(toXML({a: {b: "B"}}, null, 2), "<a>\n  <b>B</b>\n</a>\n");
+    assert.equal(toXML({a: {b: {c: "C"}}}, null, 2), "<a>\n  <b>\n    <c>C</c>\n  </b>\n</a>\n");
+    assert.equal(toXML({xml: "string"}, null, "  "), "<xml>string</xml>\n");
+    assert.equal(toXML({a: {b: "B"}}, null, "  "), "<a>\n  <b>B</b>\n</a>\n");
+    assert.equal(toXML({a: {b: {c: "C"}}}, null, "  "), "<a>\n  <b>\n    <c>C</c>\n  </b>\n</a>\n");
   });
 
   it("escape", function() {

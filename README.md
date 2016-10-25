@@ -1,4 +1,4 @@
-# toXML - JavaScript Object to XML
+# toXML - Pure JavaScript XML Writer
 
 [![npm version](https://badge.fury.io/js/to-xml.svg)](http://badge.fury.io/js/to-xml) [![Build Status](https://travis-ci.org/kawanet/to-xml.svg?branch=master)](https://travis-ci.org/kawanet/to-xml)
 
@@ -53,7 +53,7 @@ var xml = toXML({
       "baz": "BAZ"
     }
   }
-}, {indent: 2});
+}, null, 2);
 ```
 
 XML:
@@ -68,17 +68,17 @@ XML:
 
 ### Empty Element
 
-JavaScript: empty object
+JavaScript: null
 
 ```js
 var xml = toXML({
   "xml": {
     "foo": {"@bar": "BAR"},
-    "buz": {},
-    "qux": null,
+    "buz": null,
+    "qux": {},
     "quux": ""
   }
-}, {indent: 2})
+}, null, 2)
 ```
 
 XML: empty element
@@ -101,7 +101,7 @@ var xml = toXML({
   "xml": {
     "foo": ["BAR", "BAZ", "QUX"]
   }
-}, {indent: 2})
+}, null, 2)
 ```
 
 XML: child nodes
@@ -126,7 +126,7 @@ var xml = toXML({
       "": "BAZ"
     }
   }
-}, {indent: 2})
+}, null, 2)
 ```
 
 XML: text node
@@ -155,7 +155,7 @@ var xml = toXML({
       ]
     }
   }
-}, {indent: "\t"})
+}, null, "\t")
 ```
 
 XML: child nodes in order
