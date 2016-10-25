@@ -62,6 +62,43 @@ describe("toXML", function() {
     assert.equal(toXML({a: {"": ["B", {c: "C"}, "D"]}}), '<a>B<c>C</c>D</a>');
   });
 
+  it('comment', function() {
+    assert.equal(toXML({foo: {"!": "bar"}}),
+      '<foo><!bar></foo>');
+    assert.equal(toXML({foo: {"!": "--bar--"}}),
+      '<foo><!--bar--></foo>');
+    assert.equal(toXML({foo: {"!": ["bar", "baz"]}}),
+      '<foo><!bar><!baz></foo>');
+    assert.equal(toXML({foo: {"!": ["--bar--", "--baz--"]}}),
+      '<foo><!--bar--><!--baz--></foo>');
+    assert.equal(toXML({foo: {"!": ["bar", "--baz--"]}}),
+      '<foo><!bar><!--baz--></foo>');
+    assert.equal(toXML({foo: {"!": '--L<G>A&Q"--'}}),
+      '<foo><!--L<G>A&Q"--></foo>');
+  });
+
+  it('xml declaration', function() {
+    assert.equal(toXML({"?": 'xml version="1.1"'}), '<?xml version="1.1"?>');
+
+    var res = '<?xml version="1.0"?>' +
+      '<!DOCTYPE foo SYSTEM "foo.dtd">' +
+      '<foo>FOO</foo>';
+
+    assert.equal(toXML({
+      "?": 'xml version="1.0"',
+      "!": 'DOCTYPE foo SYSTEM "foo.dtd"',
+      "foo": "FOO"
+    }), res);
+
+    assert.equal(toXML({
+      "": [
+        {"?": 'xml version="1.0"'},
+        {"!": 'DOCTYPE foo SYSTEM "foo.dtd"'},
+        {"foo": "FOO"}
+      ]
+    }), res);
+  });
+
   it("indent", function() {
     assert.equal(toXML({xml: "string"}, null, 1), "<xml>string</xml>\n");
     assert.equal(toXML({a: {b: "B"}}, null, 1), "<a>\n <b>B</b>\n</a>\n");

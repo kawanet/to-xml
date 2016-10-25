@@ -63,13 +63,25 @@ var toXML;
   }
 
   function fromString(buf, tag, value) {
-    value = escapeXML(value);
-    if (tag) {
-      value = "<" + tag + ">" + value + "</" + tag + ">";
+    if (tag === "?") {
+      // XML declaration
+      value = "<?" + value + "?>";
+    } else if (tag === "!") {
+      // comment, CDATA section
+      value = "<!" + value + ">";
+    } else {
+      value = escapeXML(value);
+      if (tag) {
+        // text element without attributes
+        value = "<" + tag + ">" + value + "</" + tag + ">";
+      }
     }
+
     if (buf.i) {
+      // with indent
       buf.r += buf.l + value + LF;
     } else {
+      // without indent
       buf.r += value;
     }
   }
@@ -83,12 +95,15 @@ var toXML;
   function fromObject(buf, tag, value) {
     if (Array.isArray(value)) return fromArray(buf, tag, value);
 
+    // empty tag
     var hasTag = !!tag;
     if (value === null) {
       if (!hasTag) return;
       value = {};
     }
+
     var keys = Object.keys(value);
+    var keyLength = keys.length;
     var attrs = keys.filter(isAttribute);
     var attrLength = attrs.length;
     var hasIndent = buf.i;
@@ -109,7 +124,7 @@ var toXML;
       });
 
       // empty element
-      if (keys.length === attrLength) {
+      if (keyLength === attrLength) {
         buf.r += "/>";
         if (hasIndent) buf.r += LF;
         return;
