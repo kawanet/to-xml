@@ -41,7 +41,7 @@ describe("toXML", function() {
     assert.equal(toXML({a: {b: "B", c: "C"}}), '<a><b>B</b><c>C</c></a>');
   });
 
-  it("empty", function() {
+  it("empty element", function() {
     assert.equal(toXML({xml: {undef: UNDEFINED}}), '<xml></xml>'); // ignored
     assert.equal(toXML({xml: {"null": null}}), '<xml><null/></xml>'); // empty element
     assert.equal(toXML({xml: {object: {}}}), '<xml><object/></xml>'); // empty element
@@ -53,15 +53,27 @@ describe("toXML", function() {
     assert.equal(toXML({a: {"@b": "B", "@c": "C"}}), '<a b="B" c="C"/>');
     assert.equal(toXML({a: {"@b": "B", c: "C"}}), '<a b="B"><c>C</c></a>');
     assert.equal(toXML({a: {"@b": "B", "": "C"}}), '<a b="B">C</a>');
+    assert.equal(toXML({a: {"@b": UNDEFINED}}), '<a/>');
     assert.equal(toXML({a: {"@b": null}}), '<a b/>');
     assert.equal(toXML({a: {"@b": null, "": "C"}}), '<a b>C</a>');
     assert.equal(toXML({a: {"@b": ["B", "C"]}}), '<a b="B" b="C"/>');
+    assert.equal(toXML({a: {"@b": [UNDEFINED, UNDEFINED]}}), '<a/>');
+  });
+
+  it("raw attributes", function() {
+    assert.equal(toXML({foo: {"@": "FOO"}}), '<foo FOO/>');
+    assert.equal(toXML({foo: {"@": ["FOO", "BAR"]}}), '<foo FOO BAR/>');
+
+    // empty attribute name will not make its value escaped
+    assert.equal(toXML({foo: {"@": "&"}}), '<foo &/>');
+    assert.equal(toXML({foo: {"@": ["&", "&"]}}), '<foo & &/>');
   });
 
   it("array", function() {
     assert.equal(toXML({ul: {li: []}}), '<ul></ul>');
     assert.equal(toXML({ul: {li: [{span: "foo"}, {span: "bar"}]}}), '<ul><li><span>foo</span></li><li><span>bar</span></li></ul>');
     assert.equal(toXML({ul: {li: ["", "string", 0, true]}}), '<ul><li></li><li>string</li><li>0</li><li>true</li></ul>');
+    assert.equal(toXML({ul: {li: [UNDEFINED, UNDEFINED]}}), '<ul></ul>');
   });
 
   it("fragment", function() {
@@ -121,6 +133,7 @@ describe("toXML", function() {
   it("escape", function() {
     assert.equal(toXML({xml: 'L<G>A&Q"'}), '<xml>L&lt;G&gt;A&amp;Q&quot;</xml>');
     assert.equal(toXML({xml: {"@attr": 'L<G>A&Q"'}}), '<xml attr="L&lt;G&gt;A&amp;Q&quot;"/>');
+    assert.equal(toXML({"&": {"@&": "&", "": "&"}}), '<& &="&amp;">&amp;</&>');
   });
 
   it("whitespace", function() {

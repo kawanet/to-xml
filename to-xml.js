@@ -150,6 +150,12 @@ var toXML;
           if (replacer) val = replacer(name, val);
           if ("undefined" === typeof val) return;
 
+          // empty attribute name
+          if (name === "@") {
+            job.r += ' ' + val;
+            return;
+          }
+
           // attribute name
           job.r += ' ' + name.substr(1);
 
