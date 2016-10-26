@@ -24,38 +24,21 @@ Browser:
 <script src="https://rawgit.com/kawanet/to-xml/master/dist/to-xml.min.js"></script>
 ```
 
-JavaScript: `toXML()` returns the String.
+JavaScript: `toXML()` returns an XML String.
 
 ```js
-var xml = toXML({
+var data = {
   "xml": {
     "@foo": "FOO",
     "bar": {
       "baz": "BAZ"
     }
   }
-});
-```
+};
 
-XML:
+var xml = toXML(data, null, 2);
 
-```xml
-<xml foo="FOO"><bar><baz>BAZ</baz></bar></xml>
-```
-
-### Pretty Printing
-
-JavaScript: default indent level is 0.
-
-```js
-var xml = toXML({
-  "xml": {
-    "@foo": "FOO",
-    "bar": {
-      "baz": "BAZ"
-    }
-  }
-}, null, 2);
+console.warn(xml);
 ```
 
 XML:
@@ -70,17 +53,17 @@ XML:
 
 ### Empty Element
 
-JavaScript: null
+JavaScript: null or empty object
 
-```js
-var xml = toXML({
+```json
+{
   "xml": {
     "foo": {"@bar": "BAR"},
     "buz": null,
     "qux": {},
     "quux": ""
   }
-}, null, 2)
+}
 ```
 
 XML: empty element
@@ -96,35 +79,37 @@ XML: empty element
 
 ### Empty Attribute
 
-JavaScript: null
+JavaScript: @ key or null value
 
-```js
-var xml = toXML({
+```json
+{
   "xml": {
-    "@bar": null,
+    "@": "bar",
+    "@baz": null,
     "foo": "FOO"
   }
-}, null, 2)
+}
 ```
 
 XML: empty attribute
 
 ```xml
-<xml bar>
-  <foo>FOO</foo>
+<xml bar baz>
+    <foo>FOO</foo>
 </xml>
 ```
 
 ### Multiple Child Nodes
 
-JavaScript: Array 
+JavaScript: Array of String or Array of Object
 
-```js
+```json
+{
 var xml = toXML({
   "xml": {
     "foo": ["BAR", "BAZ", "QUX"]
   }
-}, null, 2)
+}
 ```
 
 XML: child nodes
@@ -141,15 +126,15 @@ XML: child nodes
 
 JavaScript: empty property name with String value
 
-```js
-var xml = toXML({
+```json
+{
   "xml": {
     "foo": {
       "@bar": "BAR",
       "": "BAZ"
     }
   }
-}, null, 2)
+}
 ```
 
 XML: text node
@@ -162,23 +147,54 @@ XML: text node
 </xml>
 ```
 
+### XML Declaration and Comment
+
+JavaScript: ? and ! as property name
+
+```json
+{
+  "?": "xml version=\"1.0\"",
+  "!": "DOCTYPE note SYSTEM \"Note.dtd\"",
+  "note": {
+    "title": "FOO",
+    "!": "-- comment --",
+    "body": "BAR"
+  }
+}
+```
+
+XML:
+
+```xml
+<?xml version="1.0"?>
+<!DOCTYPE note SYSTEM "Note.dtd">
+<note>
+  <title>FOO</title>
+  <!-- comment -->
+  <body>BAR</body>
+</note>
+```
+
 ### Fragment
 
 JavaScript: empty property name with Array value
 
-```js
-var xml = toXML({
+```json
+{
   "plist": {
     "@version": "1.0",
     "dict": {
       "": [
-        {"key": "CFBundleDevelopmentRegion", "string": "ja"},
-        {"key": "CFBundleIcons", "dict": null},
-        {"key": "LSRequiresIPhoneOS", "true": null}
+        {"key": "CFBundleDevelopmentRegion"},
+        {"string": "ja"},
+        {"key": "CFBundleIcons"},
+        {"dict": null},
+        {"key": "LSRequiresIPhoneOS"},
+        {"true": null}
       ]
     }
   }
-}, null, "\t")
+}
 ```
 
 XML: child nodes in order
