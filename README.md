@@ -2,15 +2,15 @@
 
 [![npm version](https://badge.fury.io/js/to-xml.svg)](http://badge.fury.io/js/to-xml) [![Build Status](https://travis-ci.org/kawanet/to-xml.svg?branch=master)](https://travis-ci.org/kawanet/to-xml)
 
-Live Demo: [https://kawanet.github.io/from-xml/](https://kawanet.github.io/from-xml/)
+**Live Demo: [https://kawanet.github.io/from-xml/](https://kawanet.github.io/from-xml/)**
 
-## Features
+## FEATURES
 
 - Simple: single writer function `toXML()` which returns XML string.
 - Small: less than 2KB minified, less than 1KB gzipped.
 - Standalone: no external module dependency nor DOM needed.
 
-## Usage
+## SYNOPSIS
 
 Node.js:
 
@@ -24,7 +24,7 @@ Browser:
 <script src="https://rawgit.com/kawanet/to-xml/master/dist/to-xml.min.js"></script>
 ```
 
-JavaScript: `toXML()` returns an XML String.
+Run:
 
 ```js
 var data = {
@@ -41,7 +41,7 @@ var xml = toXML(data, null, 2);
 console.warn(xml);
 ```
 
-XML:
+Result:
 
 ```xml
 <xml foo="FOO">
@@ -50,6 +50,8 @@ XML:
   </bar>
 </xml>
 ```
+
+## EXAMPLES
 
 ### Empty Element
 
@@ -105,7 +107,6 @@ JavaScript: Array of String or Array of Object
 
 ```json
 {
-var xml = toXML({
   "xml": {
     "foo": ["BAR", "BAZ", "QUX"]
   }
@@ -201,14 +202,14 @@ XML: child nodes in order
 
 ```xml
 <plist version="1.0">
-	<dict>
-		<key>CFBundleDevelopmentRegion</key>
-		<string>ja</string>
-		<key>CFBundleIcons</key>
-		<dict/>
-		<key>LSRequiresIPhoneOS</key>
-		<true/>
-	</dict>
+  <dict>
+    <key>CFBundleDevelopmentRegion</key>
+    <string>ja</string>
+    <key>CFBundleIcons</key>
+    <dict/>
+    <key>LSRequiresIPhoneOS</key>
+    <true/>
+  </dict>
 </plist>
 ```
 
