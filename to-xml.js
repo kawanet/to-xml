@@ -39,6 +39,8 @@ var toXML;
 
   var isArray = Array.isArray || _isArray;
 
+  var REPLACE = String.prototype.replace;
+
   exports.toXML = toXML = _toXML;
 
   function _toXML(value, replacer, space) {
@@ -93,7 +95,7 @@ var toXML;
       // comment, CDATA section
       value = "<!" + value + ">";
     } else {
-      value = escapeXML(value);
+      value = escapeTextNode(value);
       if (key) {
         // text element without attributes
         value = "<" + key + ">" + value + "</" + key + ">";
@@ -162,7 +164,7 @@ var toXML;
           // property attribute
           if (val === null) return;
 
-          job.r += '="' + escapeXML(val) + '"';
+          job.r += '="' + escapeAttribute(val) + '"';
         }
       });
 
@@ -205,10 +207,16 @@ var toXML;
     }
   }
 
-  function escapeXML(str) {
-    return String.prototype.replace.call(str, /(^\s|[&<>"]|\s$)/g, function(str) {
-      return ESCAPE[str] || str;
-    });
+  function escapeTextNode(str) {
+    return REPLACE.call(str, /(^\s|[&<>]|\s$)/g, escapeRef);
+  }
+
+  function escapeAttribute(str) {
+    return REPLACE.call(str, /([&"])/g, escapeRef);
+  }
+
+  function escapeRef(str) {
+    return ESCAPE[str] || str;
   }
 
   function _isArray(array) {

@@ -131,8 +131,13 @@ describe("toXML", function() {
   });
 
   it("escape", function() {
-    assert.equal(toXML({xml: 'L<G>A&Q"'}), '<xml>L&lt;G&gt;A&amp;Q&quot;</xml>');
-    assert.equal(toXML({xml: {"@attr": 'L<G>A&Q"'}}), '<xml attr="L&lt;G&gt;A&amp;Q&quot;"/>');
+    // text node escapes 3 characters: &, <, >
+    assert.equal(toXML({xml: 'L<G>A&Q"'}), '<xml>L&lt;G&gt;A&amp;Q"</xml>');
+
+    // attribute escapes 2 characters: &, "
+    assert.equal(toXML({xml: {"@attr": 'L<G>A&Q"'}}), '<xml attr="L<G>A&amp;Q&quot;"/>');
+
+    // tag and attribute name not escaped
     assert.equal(toXML({"&": {"@&": "&", "": "&"}}), '<& &="&amp;">&amp;</&>');
   });
 
@@ -181,9 +186,9 @@ describe("toXML", function() {
 
     // replacer should work before escaped
     assert.equal(toXML({"foo": {"baz": 'l<g>a&q"'}}, bazUpper),
-      '<foo><baz>L&lt;G&gt;A&amp;Q&quot;</baz></foo>');
+      '<foo><baz>L&lt;G&gt;A&amp;Q"</baz></foo>');
     assert.equal(toXML({"foo": {"@baz": 'l<g>a&q"'}}, bazUpper),
-      '<foo baz="L&lt;G&gt;A&amp;Q&quot;"/>');
+      '<foo baz="L<G>A&amp;Q&quot;"/>');
 
     function bazUpper(key, val) {
       if (key && key.indexOf("baz") > -1) {
