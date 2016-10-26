@@ -25,6 +25,10 @@ var toXML;
   };
 
   var ESCAPE = {
+    "\t": "&#x09;",
+    "\n": "&#x0a;",
+    "\r": "&#x0d;",
+    " ": "&#x20;",
     "&": "&amp;",
     "<": "&lt;",
     ">": "&gt;",
@@ -186,9 +190,8 @@ var toXML;
   }
 
   function escapeXML(str) {
-    if ("string" !== typeof str) str += "";
-    return str.replace(/([&<>"])/g, function(str) {
-      return ESCAPE[str];
+    return String.prototype.replace.call(str, /(^\s|[&<>"]|\s$)/g, function(str) {
+      return ESCAPE[str] || str;
     });
   }
 

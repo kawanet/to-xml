@@ -120,6 +120,12 @@ describe("toXML", function() {
     assert.equal(toXML({xml: {"@attr": 'L<G>A&Q"'}}), '<xml attr="L&lt;G&gt;A&amp;Q&quot;"/>');
   });
 
+  it("whitespace", function() {
+    assert.equal(toXML({xml: " F O O "}), '<xml>&#x20;F O O&#x20;</xml>');
+    assert.equal(toXML({xml: "\tF\tO\tO\t"}), '<xml>&#x09;F\tO\tO&#x09;</xml>');
+    assert.equal(toXML({xml: "\rF\nO\rO\n"}), '<xml>&#x0d;F\nO\rO&#x0a;</xml>');
+  });
+
   it("replacer", function() {
     assert.equal(JSON.stringify({foo: {"bar": "BAR", "baz": "BAZ"}}, bazLower),
       '{"foo":{"bar":"BAR","baz":"baz"}}');
