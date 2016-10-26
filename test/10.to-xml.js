@@ -130,12 +130,17 @@ describe("toXML", function() {
   });
 
   it("replacer", function() {
+    // replacer which may return modified string
     assert.equal(JSON.stringify({foo: {"bar": "BAR", "baz": "BAZ"}}, bazLower),
       '{"foo":{"bar":"BAR","baz":"baz"}}');
     assert.equal(toXML({foo: {"bar": "BAR", "baz": "BAZ"}}, bazLower),
       '<foo><bar>BAR</bar><baz>baz</baz></foo>');
+    assert.equal(toXML({foo: {"baz": ["BAZ-1", "BAZ-2"]}}, bazLower),
+      '<foo><baz>baz-1</baz><baz>baz-2</baz></foo>');
     assert.equal(toXML({foo: {"@bar": "BAR", "@baz": "BAZ"}}, bazLower),
       '<foo bar="BAR" baz="baz"/>');
+    assert.equal(toXML({foo: {"@baz": ["BAZ-1", "BAZ-2"]}}, bazLower),
+      '<foo baz="baz-1" baz="baz-2"/>');
 
     function bazLower(key, val) {
       if (key && key.indexOf("baz") > -1) {
@@ -144,11 +149,16 @@ describe("toXML", function() {
       return val;
     }
 
+    // replacer which may return undefined
     assert.equal(JSON.stringify({foo: {"bar": "BAR", "baz": "BAZ"}}, barIgnore),
       '{"foo":{"baz":"BAZ"}}');
     assert.equal(toXML({foo: {"bar": "BAR", "baz": "BAZ"}}, barIgnore),
       '<foo><baz>BAZ</baz></foo>');
+    assert.equal(toXML({foo: {"bar": ["BAR-1", "BAR-2"], "baz": "BAZ"}}, barIgnore),
+      '<foo><baz>BAZ</baz></foo>');
     assert.equal(toXML({foo: {"@bar": "BAR", "@baz": "BAZ"}}, barIgnore),
+      '<foo baz="BAZ"/>');
+    assert.equal(toXML({foo: {"@bar": ["BAR-1", "BAR-2"], "@baz": "BAZ"}}, barIgnore),
       '<foo baz="BAZ"/>');
 
     function barIgnore(key, val) {
@@ -156,10 +166,31 @@ describe("toXML", function() {
       return val;
     }
 
-    // escaping should work also with replacer
-    assert.equal(toXML({foo: {"@bar": 'L<G>A&Q"', "baz": 'L<G>A&Q"'}}, barIgnore),
+    // replacer should work before escaped
+    assert.equal(toXML({"foo": {"baz": 'l<g>a&q"'}}, bazUpper),
       '<foo><baz>L&lt;G&gt;A&amp;Q&quot;</baz></foo>');
-    assert.equal(toXML({foo: {"bar": 'L<G>A&Q"', "@baz": 'L<G>A&Q"'}}, barIgnore),
-      '<foo baz="L&lt;G&gt;A&amp;Q&quot;"></foo>');
+    assert.equal(toXML({"foo": {"@baz": 'l<g>a&q"'}}, bazUpper),
+      '<foo baz="L&lt;G&gt;A&amp;Q&quot;"/>');
+
+    function bazUpper(key, val) {
+      if (key && key.indexOf("baz") > -1) {
+        return String.prototype.toUpperCase.call(val);
+      }
+      return val;
+    }
+
+    // replacer which replaces Date object
+    if (Date.prototype.toJSON) {
+      var dtJSON = (new Date(2016, 9, 26, 21, 28, 0)).toJSON();
+      var date = new Date(dtJSON); // 2016-10-26T12:28:00.000Z
+      assert.equal(JSON.stringify({"foo": date}, dateReplacer),
+        '{"foo":"' + dtJSON + '"}');
+      assert.equal(toXML({"foo": {"@date": date, "bar": date}}, dateReplacer),
+        '<foo date="' + dtJSON + '"><bar>' + dtJSON + '</bar></foo>');
+    }
+
+    function dateReplacer(key, val) {
+      return (val instanceof Date) ? val.toJSON() : val;
+    }
   });
 });

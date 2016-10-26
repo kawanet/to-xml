@@ -76,10 +76,13 @@ var toXML;
   }
 
   function fromAny(job, key, value) {
-    var f = job.f;
-    if (f) value = f(key, value); // replacer
-    f = TYPES[typeof value];
-    if (f) value = f(job, key, value);
+    if (_isArray(value)) return fromArray(job, key, value);
+
+    var replacer = job.f;
+    if (replacer) value = replacer(key, value);
+
+    var f = TYPES[typeof value];
+    if (f) f(job, key, value);
   }
 
   function fromString(job, key, value) {
@@ -113,8 +116,6 @@ var toXML;
   }
 
   function fromObject(job, key, value) {
-    if (_isArray(value)) return fromArray(job, key, value);
-
     // empty tag
     var hasTag = !!key;
     if (value === null) {
@@ -145,9 +146,8 @@ var toXML;
         }
 
         function setAttribute(val) {
-          // replacer
-          var f = job.f;
-          if (f) val = f(name, val);
+          var replacer = job.f;
+          if (replacer) val = replacer(name, val);
           if ("undefined" === typeof val) return;
 
           // attribute name
