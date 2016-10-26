@@ -16,6 +16,7 @@
 var toXML;
 
 (function(exports) {
+
   var TYPES = {
     "boolean": fromString,
     "number": fromString,
@@ -35,13 +36,13 @@ var toXML;
   exports.toXML = toXML = _toXML;
 
   function _toXML(value, replacer, space) {
-    var buf = createBuffer(replacer, space);
-    fromAny(buf, null, value);
-    return buf.r;
+    var job = createJob(replacer, space);
+    fromAny(job, null, value);
+    return job.r;
   }
 
-  function createBuffer(replacer, space) {
-    var buf = {
+  function createJob(replacer, space) {
+    var job = {
       f: replacer, // replacer function
       // s: "", // indent string
       // i: 0, // indent string length
@@ -59,57 +60,57 @@ var toXML;
       } else {
         str += space; // stringify
       }
-      buf.s = str;
+      job.s = str;
 
       // indent string length
-      buf.i = str.length;
+      job.i = str.length;
     }
 
-    return buf;
+    return job;
   }
 
-  function fromAny(buf, tag, value) {
-    var f = buf.f;
-    if (f) value = f(tag, value); // replacer
+  function fromAny(job, key, value) {
+    var f = job.f;
+    if (f) value = f(key, value); // replacer
     f = TYPES[typeof value];
-    if (f) value = f(buf, tag, value);
+    if (f) value = f(job, key, value);
   }
 
-  function fromString(buf, tag, value) {
-    if (tag === "?") {
+  function fromString(job, key, value) {
+    if (key === "?") {
       // XML declaration
       value = "<?" + value + "?>";
-    } else if (tag === "!") {
+    } else if (key === "!") {
       // comment, CDATA section
       value = "<!" + value + ">";
     } else {
       value = escapeXML(value);
-      if (tag) {
+      if (key) {
         // text element without attributes
-        value = "<" + tag + ">" + value + "</" + tag + ">";
+        value = "<" + key + ">" + value + "</" + key + ">";
       }
     }
 
-    if (buf.i) {
+    if (job.i) {
       // with indent
-      buf.r += buf.l + value + LF;
+      job.r += job.l + value + LF;
     } else {
       // without indent
-      buf.r += value;
+      job.r += value;
     }
   }
 
-  function fromArray(buf, tag, value) {
+  function fromArray(job, key, value) {
     Array.prototype.forEach.call(value, function(value) {
-      fromAny(buf, tag, value);
+      fromAny(job, key, value);
     });
   }
 
-  function fromObject(buf, tag, value) {
-    if (Array.isArray(value)) return fromArray(buf, tag, value);
+  function fromObject(job, key, value) {
+    if (Array.isArray(value)) return fromArray(job, key, value);
 
     // empty tag
-    var hasTag = !!tag;
+    var hasTag = !!key;
     if (value === null) {
       if (!hasTag) return;
       value = {};
@@ -119,64 +120,64 @@ var toXML;
     var keyLength = keys.length;
     var attrs = keys.filter(isAttribute);
     var attrLength = attrs.length;
-    var hasIndent = buf.i;
+    var hasIndent = job.i;
     var incIndent = hasTag && hasIndent;
 
     // open tag
     if (hasTag) {
-      if (hasIndent) buf.r += buf.l;
-      buf.r += '<' + tag;
+      if (hasIndent) job.r += job.l;
+      job.r += '<' + key;
 
       // attributes
-      attrs.forEach(function(key) {
-        var val = value[key];
+      attrs.forEach(function(name) {
+        var val = value[name];
 
         // replacer
-        var f = buf.f;
-        if (f) val = f(key, val);
+        var f = job.f;
+        if (f) val = f(name, val);
         if ("undefined" === typeof val) return;
 
         // attribute name
-        buf.r += ' ' + key.substr(1);
+        job.r += ' ' + name.substr(1);
 
         // property attribute
         if (val === null) return;
 
-        buf.r += '="' + escapeXML(val) + '"';
+        job.r += '="' + escapeXML(val) + '"';
       });
 
       // empty element
       if (keyLength === attrLength) {
-        buf.r += "/>";
-        if (hasIndent) buf.r += LF;
+        job.r += "/>";
+        if (hasIndent) job.r += LF;
         return;
       }
 
-      buf.r += '>';
-      if (hasIndent) buf.r += LF;
+      job.r += '>';
+      if (hasIndent) job.r += LF;
     }
 
     // increase indent level
     if (incIndent) {
-      buf.l += buf.s;
+      job.l += job.s;
     }
 
     // child nodes
-    keys.forEach(function(key) {
-      if (isAttribute(key)) return;
-      fromAny(buf, key, value[key]);
+    keys.forEach(function(name) {
+      if (isAttribute(name)) return;
+      fromAny(job, name, value[name]);
     });
 
     // decrease indent level
     if (incIndent) {
-      buf.l = buf.l.substr(buf.i);
+      job.l = job.l.substr(job.i);
     }
 
     // close tag
     if (hasTag) {
-      if (hasIndent) buf.r += buf.l;
-      buf.r += '</' + tag + '>';
-      if (hasIndent) buf.r += LF;
+      if (hasIndent) job.r += job.l;
+      job.r += '</' + key + '>';
+      if (hasIndent) job.r += LF;
     }
 
     function isAttribute(name) {
@@ -190,4 +191,5 @@ var toXML;
       return ESCAPE[str];
     });
   }
+
 })(typeof exports === 'object' && exports || {});
