@@ -1,5 +1,9 @@
 // #!/usr/bin/env mocha -R spec
 
+/* jshint mocha:true */
+/* jshint browser:true */
+/* globals JSON */
+
 var exported = ("undefined" !== typeof require) ? require("../") : window;
 var toXML = exported.toXML;
 
@@ -39,7 +43,7 @@ describe("toXML", function() {
 
   it("empty", function() {
     assert.equal(toXML({xml: {undef: UNDEFINED}}), '<xml></xml>'); // ignored
-    assert.equal(toXML({xml: {null: null}}), '<xml><null/></xml>'); // empty element
+    assert.equal(toXML({xml: {"null": null}}), '<xml><null/></xml>'); // empty element
     assert.equal(toXML({xml: {object: {}}}), '<xml><object/></xml>'); // empty element
     assert.equal(toXML({xml: {string: ""}}), '<xml><string></string></xml>');
   });

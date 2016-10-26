@@ -4,10 +4,10 @@ var toXML;
 
 (function(exports) {
   var TYPES = {
-    boolean: fromString,
-    number: fromString,
-    object: fromObject,
-    string: fromString
+    "boolean": fromString,
+    "number": fromString,
+    "object": fromObject,
+    "string": fromString
   };
 
   var ESCAPE = {

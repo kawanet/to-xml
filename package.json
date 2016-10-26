@@ -12,6 +12,12 @@
     "uglify-js": "^2.7.3"
   },
   "homepage": "https://github.com/kawanet/to-xml#readme",
+  "jshintConfig": {
+    "es3": true,
+    "node": true,
+    "undef": true,
+    "unused": true
+  },
   "keywords": [
     "json",
     "serialize",
