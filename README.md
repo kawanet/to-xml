@@ -225,6 +225,12 @@ XML: child nodes in order
 
 - [https://github.com/kawanet/to-xml](https://github.com/kawanet/to-xml)
 
+### Tests
+
+- [https://kawanet.github.io/from-xml/](https://kawanet.github.io/from-xml/)
+- [https://travis-ci.org/kawanet/to-xml](https://travis-ci.org/kawanet/to-xml)
+- [https://rawgit.com/kawanet/to-xml/master/test/test.html](https://rawgit.com/kawanet/to-xml/master/test/test.html)
+
 ## LICENSE
 
 The MIT License (MIT)
