@@ -37,6 +37,8 @@ var toXML;
 
   var LF = "\n";
 
+  var isArray = Array.isArray || _isArray;
+
   exports.toXML = toXML = _toXML;
 
   function _toXML(value, replacer, space) {
@@ -111,7 +113,7 @@ var toXML;
   }
 
   function fromObject(job, key, value) {
-    if (Array.isArray(value)) return fromArray(job, key, value);
+    if (_isArray(value)) return fromArray(job, key, value);
 
     // empty tag
     var hasTag = !!key;
@@ -136,18 +138,26 @@ var toXML;
       attrs.forEach(function(name) {
         var val = value[name];
 
-        // replacer
-        var f = job.f;
-        if (f) val = f(name, val);
-        if ("undefined" === typeof val) return;
+        if (isArray(val)) {
+          val.forEach(setAttribute);
+        } else {
+          setAttribute(val);
+        }
 
-        // attribute name
-        job.r += ' ' + name.substr(1);
+        function setAttribute(val) {
+          // replacer
+          var f = job.f;
+          if (f) val = f(name, val);
+          if ("undefined" === typeof val) return;
 
-        // property attribute
-        if (val === null) return;
+          // attribute name
+          job.r += ' ' + name.substr(1);
 
-        job.r += '="' + escapeXML(val) + '"';
+          // property attribute
+          if (val === null) return;
+
+          job.r += '="' + escapeXML(val) + '"';
+        }
       });
 
       // empty element
@@ -193,6 +203,10 @@ var toXML;
     return String.prototype.replace.call(str, /(^\s|[&<>"]|\s$)/g, function(str) {
       return ESCAPE[str] || str;
     });
+  }
+
+  function _isArray(array) {
+    return array instanceof Array;
   }
 
 })(typeof exports === 'object' && exports || {});

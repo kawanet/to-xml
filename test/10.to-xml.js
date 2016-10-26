@@ -48,16 +48,19 @@ describe("toXML", function() {
     assert.equal(toXML({xml: {string: ""}}), '<xml><string></string></xml>');
   });
 
-  it("attr", function() {
+  it("attributes", function() {
     assert.equal(toXML({a: {"@b": "B"}}), '<a b="B"/>');
     assert.equal(toXML({a: {"@b": "B", "@c": "C"}}), '<a b="B" c="C"/>');
     assert.equal(toXML({a: {"@b": "B", c: "C"}}), '<a b="B"><c>C</c></a>');
     assert.equal(toXML({a: {"@b": "B", "": "C"}}), '<a b="B">C</a>');
     assert.equal(toXML({a: {"@b": null}}), '<a b/>');
     assert.equal(toXML({a: {"@b": null, "": "C"}}), '<a b>C</a>');
+    assert.equal(toXML({a: {"@b": ["B", "C"]}}), '<a b="B" b="C"/>');
   });
 
   it("array", function() {
+    assert.equal(toXML({ul: {li: []}}), '<ul></ul>');
+    assert.equal(toXML({ul: {li: [{span: "foo"}, {span: "bar"}]}}), '<ul><li><span>foo</span></li><li><span>bar</span></li></ul>');
     assert.equal(toXML({ul: {li: ["", "string", 0, true]}}), '<ul><li></li><li>string</li><li>0</li><li>true</li></ul>');
   });
 
