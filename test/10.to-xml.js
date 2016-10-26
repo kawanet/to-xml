@@ -119,15 +119,34 @@ describe("toXML", function() {
   });
 
   it("indent", function() {
-    assert.equal(toXML({xml: "string"}, null, 1), "<xml>string</xml>\n");
-    assert.equal(toXML({a: {b: "B"}}, null, 1), "<a>\n <b>B</b>\n</a>\n");
-    assert.equal(toXML({a: {b: {c: "C"}}}, null, 1), "<a>\n <b>\n  <c>C</c>\n </b>\n</a>\n");
-    assert.equal(toXML({xml: "string"}, null, 2), "<xml>string</xml>\n");
-    assert.equal(toXML({a: {b: "B"}}, null, 2), "<a>\n  <b>B</b>\n</a>\n");
-    assert.equal(toXML({a: {b: {c: "C"}}}, null, 2), "<a>\n  <b>\n    <c>C</c>\n  </b>\n</a>\n");
-    assert.equal(toXML({xml: "string"}, null, "  "), "<xml>string</xml>\n");
-    assert.equal(toXML({a: {b: "B"}}, null, "  "), "<a>\n  <b>B</b>\n</a>\n");
-    assert.equal(toXML({a: {b: {c: "C"}}}, null, "  "), "<a>\n  <b>\n    <c>C</c>\n  </b>\n</a>\n");
+    // 1 space
+    assert.equal(toXML({xml: "string"}, null, 1), "<xml>string</xml>");
+    assert.equal(toXML({a: {b: "B"}}, null, 1), "<a>\n <b>B</b>\n</a>");
+    assert.equal(toXML({a: {b: {c: "C"}}}, null, 1), "<a>\n <b>\n  <c>C</c>\n </b>\n</a>");
+
+    // 2 spaces
+    assert.equal(toXML({xml: "string"}, null, 2), "<xml>string</xml>");
+    assert.equal(toXML({a: {b: "B"}}, null, 2), "<a>\n  <b>B</b>\n</a>");
+    assert.equal(toXML({a: {b: {c: "C"}}}, null, 2), "<a>\n  <b>\n    <c>C</c>\n  </b>\n</a>");
+
+    // tab
+    assert.equal(toXML({xml: "string"}, null, "\t"), "<xml>string</xml>");
+    assert.equal(toXML({a: {b: "B"}}, null, "\t"), "<a>\n\t<b>B</b>\n</a>");
+    assert.equal(toXML({a: {b: {c: "C"}}}, null, "\t"), "<a>\n\t<b>\n\t\t<c>C</c>\n\t</b>\n</a>");
+
+    // indent with attribute
+    assert.equal(toXML({"foo": {"@bar": "BAR", "": "FOO"}}, null, 1), '<foo bar="BAR">FOO</foo>');
+
+    // indent with comment
+    assert.equal(toXML({"?": "xml", "!": "-- --", "xml": "string"}, null, 1),
+      '<?xml?>\n<!-- -->\n<xml>string</xml>');
+    assert.equal(toXML({"a": {"!": "-- --"}}, null, 1),
+      '<a>\n <!-- -->\n</a>');
+    assert.equal(toXML({"a": {"b": "B", "!": "-- --", "c": "C"}}, null, 1),
+      '<a>\n <b>B</b>\n <!-- -->\n <c>C</c>\n</a>');
+
+    // indent with fragment
+    // assert.equal(toXML({"foo": {"": ["FOO", "FOO"]}}, null, 1), '<foo>\n FOOFOO\n</foo>');
   });
 
   it("escape", function() {

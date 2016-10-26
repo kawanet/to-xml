@@ -142,9 +142,7 @@ XML: text node
 
 ```xml
 <xml>
-  <foo bar="BAR">
-    BAZ
-  </foo>
+  <foo bar="BAR">BAZ</foo>
 </xml>
 ```
 

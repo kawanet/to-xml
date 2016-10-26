@@ -102,13 +102,11 @@ var toXML;
       }
     }
 
-    if (job.i) {
-      // with indent
-      job.r += job.l + value + LF;
-    } else {
-      // without indent
-      job.r += value;
+    if (key && job.i && job.r) {
+      job.r += LF + job.l; // indent
     }
+
+    job.r += value;
   }
 
   function fromArray(job, key, value) {
@@ -130,11 +128,15 @@ var toXML;
     var attrs = keys.filter(isAttribute);
     var attrLength = attrs.length;
     var hasIndent = job.i;
-    var incIndent = hasTag && hasIndent;
+    var curIndent = job.l;
+    var willIndent = hasTag && hasIndent;
+    var didIndent;
 
     // open tag
     if (hasTag) {
-      if (hasIndent) job.r += job.l;
+      if (hasIndent && job.r) {
+        job.r += LF + curIndent;
+      }
       job.r += '<' + key;
 
       // attributes
@@ -171,35 +173,37 @@ var toXML;
       // empty element
       if (keyLength === attrLength) {
         job.r += "/>";
-        if (hasIndent) job.r += LF;
         return;
       }
 
       job.r += '>';
-      if (hasIndent) job.r += LF;
     }
 
-    // increase indent level
-    if (incIndent) {
-      job.l += job.s;
-    }
-
-    // child nodes
     keys.forEach(function(name) {
+      // skip attribute
       if (isAttribute(name)) return;
+
+      // indent when it has child node but not fragment
+      if (willIndent && (name || isArray(value[name]))) {
+        job.l += job.s; // increase indent level
+        willIndent = 0;
+        didIndent = 1;
+      }
+
+      // child node or text node
       fromAny(job, name, value[name]);
     });
 
-    // decrease indent level
-    if (incIndent) {
+    if (didIndent) {
+      // decrease indent level
       job.l = job.l.substr(job.i);
+
+      job.r += LF + job.l;
     }
 
     // close tag
     if (hasTag) {
-      if (hasIndent) job.r += job.l;
       job.r += '</' + key + '>';
-      if (hasIndent) job.r += LF;
     }
 
     function isAttribute(name) {
