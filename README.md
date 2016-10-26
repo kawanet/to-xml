@@ -81,7 +81,7 @@ XML: empty element
 
 ### Empty Attribute
 
-JavaScript: @ key or null value
+JavaScript: `@` property name or null value
 
 ```json
 {
@@ -150,7 +150,7 @@ XML: text node
 
 ### XML Declaration and Comment
 
-JavaScript: ? and ! as property name
+JavaScript: `?` and `!` as property name
 
 ```json
 {
