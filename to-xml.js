@@ -1,4 +1,17 @@
-// to-xml.js
+/**
+ * The toXML() method converts a JavaScript value to an XML string.
+ *
+ * @function toXML
+ * @param value {Object} The value to convert to an XML string.
+ * @param [replacer] {Function} A function that alters the behavior
+ * of the stringification process.
+ * @param [space] {Number|String} A String or Number object that's
+ * used to insert white space into the output XML string for
+ * readability purposes. If this is a Number, it indicates the number
+ * of space characters to use as white space.
+ * If this is a String, the string is used as white space.
+ * @returns {String}
+ */
 
 var toXML;
 
