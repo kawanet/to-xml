@@ -78,6 +78,9 @@ var toXML;
   }
 
   function fromAny(job, key, value) {
+    // child node synonym
+    if (key === "#") key = "";
+
     if (_isArray(value)) return fromArray(job, key, value);
 
     var replacer = job.f;
@@ -164,7 +167,7 @@ var toXML;
       if (isAttribute(name)) return;
 
       // indent when it has child node but not fragment
-      if (willIndent && (name || isArray(value[name]))) {
+      if (willIndent && ((name && name !== "#") || isArray(value[name]))) {
         job.l += job.s; // increase indent level
         willIndent = 0;
         didIndent = 1;

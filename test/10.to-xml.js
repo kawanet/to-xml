@@ -259,5 +259,40 @@ describe("toXML", function() {
     }), '<?xml version="1.0"?>' +
       '<!DOCTYPE foo SYSTEM "foo.dtd">' +
       '<foo>FOO</foo>');
+
+    assert.equal(toXML({
+      request: {
+        '@': {
+          type: 'product',
+          id: 12344556
+        },
+        '#': {
+          query: {
+            vendor: 'redhat',
+            name: 'linux'
+          }
+        }
+      }
+    }), '<request type="product" id="12344556">' +
+      '<query><vendor>redhat</vendor>' +
+      '<name>linux</name></query>' +
+      '</request>');
+
+    // https://www.npmjs.com/package/js2xmlparser
+    assert.equal(toXML({
+      "person": {
+        "phone": [
+          {"@": {"type": "home"}, "#": "123-555-4567"},
+          {"@": {"type": "cell"}, "#": "890-555-1234"},
+          {"@": {"type": "work"}, "#": "567-555-8901"}
+        ],
+        "email": "john@smith.com"
+      }
+    }), '<person>' +
+      '<phone type="home">123-555-4567</phone>' +
+      '<phone type="cell">890-555-1234</phone>' +
+      '<phone type="work">567-555-8901</phone>' +
+      '<email>john@smith.com</email>' +
+      '</person>');
   });
 });

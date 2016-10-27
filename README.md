@@ -125,7 +125,7 @@ XML: child nodes
 
 ### Text Node with Attribute
 
-JavaScript: empty property name with String value
+JavaScript: `#` property name
 
 ```json
 {
@@ -148,7 +148,7 @@ XML: text node
 
 ### XML Declaration and Comment
 
-JavaScript: `?` and `!` as property name
+JavaScript: `?` and `!` property name
 
 ```json
 {
@@ -176,14 +176,14 @@ XML:
 
 ### Fragment
 
-JavaScript: empty property name with Array value
+JavaScript: `#` property name
 
 ```json
 {
   "plist": {
     "@version": "1.0",
     "dict": {
-      "": [
+      "#": [
         {"key": "CFBundleDevelopmentRegion"},
         {"string": "ja"},
         {"key": "CFBundleIcons"},
@@ -196,7 +196,7 @@ JavaScript: empty property name with Array value
 }
 ```
 
-XML: child nodes in order
+XML: child node list in order
 
 ```xml
 <plist version="1.0">
