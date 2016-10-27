@@ -60,13 +60,23 @@ describe("toXML", function() {
     assert.equal(toXML({a: {"@b": [UNDEFINED, UNDEFINED]}}), '<a/>');
   });
 
-  it("raw attributes", function() {
+  it("empty attribute name", function() {
+    // it has a bare string which is not escaped
     assert.equal(toXML({foo: {"@": "FOO"}}), '<foo FOO/>');
-    assert.equal(toXML({foo: {"@": ["FOO", "BAR"]}}), '<foo FOO BAR/>');
-
-    // empty attribute name will not make its value escaped
     assert.equal(toXML({foo: {"@": "&"}}), '<foo &/>');
+
+    // it has a list of bare strings which is not escaped
+    assert.equal(toXML({foo: {"@": ["FOO", "BAR"]}}), '<foo FOO BAR/>');
     assert.equal(toXML({foo: {"@": ["&", "&"]}}), '<foo & &/>');
+
+    // it has a set of attributes
+    assert.equal(toXML({foo: {"@": {"foo": "FOO"}}}), '<foo foo="FOO"/>');
+    assert.equal(toXML({foo: {"@": {"foo": ["FOO", "BAR"]}}}), '<foo foo="FOO" foo="BAR"/>');
+
+    // it has a list of attributes
+    assert.equal(toXML({foo: {"@": [{"foo": "FOO"}]}}), '<foo foo="FOO"/>');
+    assert.equal(toXML({foo: {"@": [{"foo": "FOO"}, "BAR"]}}), '<foo foo="FOO" BAR/>');
+    assert.equal(toXML({foo: {"@": [{"foo": ["FOO", "BAR"]}, "BAZ"]}}), '<foo foo="FOO" foo="BAR" BAZ/>');
   });
 
   it("array", function() {

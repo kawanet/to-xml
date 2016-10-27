@@ -45,7 +45,7 @@ var toXML;
 
   function _toXML(value, replacer, space) {
     var job = createJob(replacer, space);
-    fromAny(job, null, value);
+    fromAny(job, "", value);
     return job.r;
   }
 
@@ -141,33 +141,7 @@ var toXML;
 
       // attributes
       attrs.forEach(function(name) {
-        var val = value[name];
-
-        if (isArray(val)) {
-          val.forEach(setAttribute);
-        } else {
-          setAttribute(val);
-        }
-
-        function setAttribute(val) {
-          var replacer = job.f;
-          if (replacer) val = replacer(name, val);
-          if ("undefined" === typeof val) return;
-
-          // empty attribute name
-          if (name === "@") {
-            job.r += ' ' + val;
-            return;
-          }
-
-          // attribute name
-          job.r += ' ' + name.substr(1);
-
-          // property attribute
-          if (val === null) return;
-
-          job.r += '="' + escapeAttribute(val) + '"';
-        }
+        writeAttributes(job, name.substr(1), value[name]);
       });
 
       // empty element
@@ -205,10 +179,44 @@ var toXML;
     if (hasTag) {
       job.r += '</' + key + '>';
     }
+  }
 
-    function isAttribute(name) {
-      return name && name[0] === "@";
+  function writeAttributes(job, key, val) {
+    if (isArray(val)) {
+      val.forEach(function(child) {
+        writeAttributes(job, key, child);
+      });
+    } else if (!key && "object" === typeof val) {
+      Object.keys(val).forEach(function(name) {
+        writeAttributes(job, name, val[name]);
+      });
+    } else {
+      writeAttribute(job, key, val);
     }
+  }
+
+  function writeAttribute(job, key, val) {
+    var replacer = job.f;
+    if (replacer) val = replacer(key, val);
+    if ("undefined" === typeof val) return;
+
+    // empty attribute name
+    if (!key) {
+      job.r += ' ' + val;
+      return;
+    }
+
+    // attribute name
+    job.r += ' ' + key;
+
+    // property attribute
+    if (val === null) return;
+
+    job.r += '="' + escapeAttribute(val) + '"';
+  }
+
+  function isAttribute(name) {
+    return name && name[0] === "@";
   }
 
   function escapeTextNode(str) {
