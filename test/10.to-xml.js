@@ -240,4 +240,24 @@ describe("toXML", function() {
       return (val instanceof Date) ? val.toJSON() : val;
     }
   });
+
+  it("compat", function() {
+    // https://www.npmjs.com/package/object-to-xml
+    assert.equal(toXML({foo: {"!bar": null}}),
+      '<foo><!bar></foo>');
+
+    assert.equal(toXML({foo: {"!--bar--": null}}),
+      '<foo><!--bar--></foo>');
+
+    assert.equal(toXML({'?xml version="1.1"?': null}),
+      '<?xml version="1.1"?>');
+
+    assert.equal(toXML({
+      '?xml version="1.0"?': null,
+      '!DOCTYPE foo SYSTEM "foo.dtd"': null,
+      "foo": "FOO"
+    }), '<?xml version="1.0"?>' +
+      '<!DOCTYPE foo SYSTEM "foo.dtd">' +
+      '<foo>FOO</foo>');
+  });
 });

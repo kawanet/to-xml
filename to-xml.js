@@ -137,6 +137,7 @@ var toXML;
       if (hasIndent && job.r) {
         job.r += LF + curIndent;
       }
+
       job.r += '<' + key;
 
       // attributes
@@ -145,12 +146,17 @@ var toXML;
       });
 
       // empty element
-      if (keyLength === attrLength) {
-        job.r += "/>";
-        return;
+      var isEmpty = (keyLength === attrLength);
+      if (isEmpty) {
+        var firstChar = key[0];
+        if (firstChar !== "!" && firstChar !== "?") {
+          job.r += "/";
+        }
       }
 
       job.r += '>';
+
+      if (isEmpty) return;
     }
 
     keys.forEach(function(name) {
