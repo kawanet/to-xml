@@ -1,8 +1,11 @@
 {
   "name": "to-xml",
   "description": "toXML - Pure JavaScript XML Writer",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "author": "Yusuke Kawasaki <u-suke@kawa.net>",
+  "bin": {
+    "json2xml": "./bin/json2xml.cli.js"
+  },
   "bugs": {
     "url": "https://github.com/kawanet/to-xml/issues"
   },

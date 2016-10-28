@@ -211,6 +211,15 @@ XML: child node list in order
 </plist>
 ```
 
+## CLI
+
+```sh
+$ echo '{"foo":{"@bar":"BAR","buz":"BUZ"}}' | ./node_modules/.bin/json2xml -2
+<foo bar="BAR">
+  <buz>BUZ</buz>
+</foo>
+```
+
 ## SEE ALSO
 
 ### NPM
