@@ -35,6 +35,8 @@ var toXML;
     '"': "&quot;"
   };
 
+  var ATTRIBUTE_KEY = "@";
+  var CHILD_NODE_KEY = "#";
   var LF = "\n";
 
   var isArray = Array.isArray || _isArray;
@@ -79,7 +81,7 @@ var toXML;
 
   function fromAny(job, key, value) {
     // child node synonym
-    if (key === "#") key = "";
+    if (key === CHILD_NODE_KEY) key = "";
 
     if (_isArray(value)) return fromArray(job, key, value);
 
@@ -168,7 +170,7 @@ var toXML;
       if (isAttribute(name)) return;
 
       // indent when it has child node but not fragment
-      if (willIndent && ((name && name !== "#") || isArray(value[name]))) {
+      if (willIndent && ((name && name !== CHILD_NODE_KEY) || isArray(value[name]))) {
         job.l += job.s; // increase indent level
         willIndent = 0;
         didIndent = 1;
@@ -207,7 +209,7 @@ var toXML;
 
   function writeAttribute(job, key, val) {
     var replacer = job.f;
-    if (replacer) val = replacer(key, val);
+    if (replacer) val = replacer(ATTRIBUTE_KEY + key, val);
     if ("undefined" === typeof val) return;
 
     // empty attribute name
@@ -226,7 +228,7 @@ var toXML;
   }
 
   function isAttribute(name) {
-    return name && name[0] === "@";
+    return name && name[0] === ATTRIBUTE_KEY;
   }
 
   function escapeTextNode(str) {
