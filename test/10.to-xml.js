@@ -235,7 +235,9 @@ describe("toXML", function() {
       '<foo baz="BAZ"/>');
 
     function barIgnore(key, val) {
-      if (key && key.indexOf("bar") > -1) return; // undefined
+      if (key && key.indexOf("bar") > -1) {
+        return UNDEFINED;
+      }
       return val;
     }
 
@@ -264,6 +266,55 @@ describe("toXML", function() {
 
     function dateReplacer(key, val) {
       return (val instanceof Date) ? val.toJSON() : val;
+    }
+  });
+
+  it("replacer order", function() {
+    var order;
+
+    // same order for simple usage without Array
+    JSON.stringify({"a": "A", "b": {"@c": "C", "d": "D"}}, add.bind(order = []));
+    assert.equal(order.join(","), "=object,a=string,b=object,@c=string,d=string");
+
+    toXML({"a": "A", "b": {"@c": "C", "d": "D"}}, add.bind(order = []));
+    assert.equal(order.join(","), "=object,a=string,b=object,@c=string,d=string");
+
+    // array
+    JSON.stringify({"a": {"@b": ["B", "B"], "c": ["C", "C"]}}, add.bind(order = []));
+    assert.equal(order.join(","), "=object,a=object,@b=object,0=string,1=string,c=object,0=string,1=string");
+
+    toXML({"a": {"@b": ["B", "B"], "c": ["C", "C"]}}, add.bind(order = []));
+    assert.equal(order.join(","), "=object,a=object,@b=string,@b=string,c=string,c=string");
+
+    // attribute list
+    JSON.stringify({"a": {"@": {"b": "B"}}}, add.bind(order = []));
+    assert.equal(order.join(","), "=object,a=object,@=object,b=string");
+
+    toXML({"a": {"@": {"b": "B"}}}, add.bind(order = []));
+    assert.equal(order.join(","), "=object,a=object,@b=string");
+
+    JSON.stringify({"a": {"@": [{"b": "B"}, "C"]}}, add.bind(order = []));
+    assert.equal(order.join(","), "=object,a=object,@=object,0=object,b=string,1=string");
+
+    toXML({"a": {"@": [{"b": "B"}, "C"]}}, add.bind(order = []));
+    assert.equal(order.join(","), "=object,a=object,@b=string,@=string");
+
+    // child node list
+    JSON.stringify({"a": {"#": {"b": "B"}}}, add.bind(order = []));
+    assert.equal(order.join(","), "=object,a=object,#=object,b=string");
+
+    toXML({"a": {"#": {"b": "B"}}}, add.bind(order = []));
+    assert.equal(order.join(","), "=object,a=object,=object,b=string");
+
+    JSON.stringify({"a": {"#": [{"b": "B"}, "C"]}}, add.bind(order = []));
+    assert.equal(order.join(","), "=object,a=object,#=object,0=object,b=string,1=string");
+
+    toXML({"a": {"#": [{"b": "B"}, "C"]}}, add.bind(order = []));
+    assert.equal(order.join(","), "=object,a=object,=object,b=string,=string");
+
+    function add(key, val) {
+      Array.prototype.push.call(this, key + "=" + typeof val);
+      return val;
     }
   });
 
