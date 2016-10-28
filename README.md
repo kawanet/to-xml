@@ -7,7 +7,7 @@
 ## FEATURES
 
 - Simple: single writer function `toXML()` which returns XML string.
-- Small: less than 2KB minified, less than 1KB gzipped.
+- Small: 2KB minified, 1KB gzipped.
 - Standalone: no external module dependency nor DOM needed.
 
 ## SYNOPSIS
