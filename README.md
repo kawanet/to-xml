@@ -55,7 +55,7 @@ Result:
 
 ### Empty Element
 
-JavaScript: null or empty object
+JavaScript: null
 
 ```json
 {
@@ -74,7 +74,7 @@ XML: empty element
 <xml>
   <foo bar="BAR"/>
   <buz/>
-  <qux/>
+  <qux></qux>
   <quux></quux>
 </xml>
 ```
@@ -132,7 +132,7 @@ JavaScript: `#` property name
   "xml": {
     "foo": {
       "@bar": "BAR",
-      "": "BAZ"
+      "#": "BAZ"
     }
   }
 }

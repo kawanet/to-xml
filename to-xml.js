@@ -121,7 +121,8 @@ var toXML;
   function fromObject(job, key, value) {
     // empty tag
     var hasTag = !!key;
-    if (value === null) {
+    var closeTag = (value === null);
+    if (closeTag) {
       if (!hasTag) return;
       value = {};
     }
@@ -149,7 +150,7 @@ var toXML;
       });
 
       // empty element
-      var isEmpty = (keyLength === attrLength);
+      var isEmpty = closeTag || (attrLength && keyLength === attrLength);
       if (isEmpty) {
         var firstChar = key[0];
         if (firstChar !== "!" && firstChar !== "?") {
