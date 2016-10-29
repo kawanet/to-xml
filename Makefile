@@ -10,7 +10,7 @@ JSGZIP=./dist/to-xml.min.js.gz
 all: test $(JSGZIP)
 
 clean:
-	rm -fr $(JSDEST)
+	rm -fr $(DIST)
 
 $(DIST):
 	mkdir -p $(DIST)
