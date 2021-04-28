@@ -1,24 +1,13 @@
 // #!/usr/bin/env mocha -R spec
 
 /* jshint mocha:true */
-/* jshint browser:true */
 /* globals JSON */
 
-var exported = ("undefined" !== typeof require) ? require("../") : window;
-var toXML = exported.toXML;
-
-assert.equal = equal;
-assert.ok = assert;
+if (!chai) var chai = require("chai");
+var assert = chai.assert;
+if (!toXML) var toXML = require("../").toXML;
 
 var UNDEFINED;
-
-function assert(value) {
-  if (!value) throw new Error(value + " = " + true);
-}
-
-function equal(actual, expected) {
-  if (actual != expected) throw new Error(actual + " = " + expected);
-}
 
 describe("toXML", function() {
   it("string", function() {
