@@ -1,6 +1,7 @@
 # toXML - Pure JavaScript XML Writer
 
-[![npm version](https://badge.fury.io/js/to-xml.svg)](http://badge.fury.io/js/to-xml) [![Build Status](https://travis-ci.org/kawanet/to-xml.svg?branch=master)](https://travis-ci.org/kawanet/to-xml)
+[![Node.js CI](https://github.com/kawanet/to-xml/workflows/Node.js%20CI/badge.svg?branch=main)](https://github.com/kawanet/to-xml/actions/)
+[![npm version](https://badge.fury.io/js/to-xml.svg)](https://www.npmjs.com/package/to-xml)
 
 **Live Demo: [https://kawanet.github.io/from-xml/](https://kawanet.github.io/from-xml/)**
 
@@ -9,25 +10,26 @@
 - Simple: single writer function `toXML()` which returns XML string.
 - Small: 2KB minified, 1KB gzipped.
 - Standalone: no external module dependency nor DOM needed.
+- TypeScript definition: [to-xml.d.ts](https://github.com/kawanet/to-xml/blob/master/to-xml.d.ts)
 
 ## SYNOPSIS
 
 Node.js:
 
 ```js
-var toXML = require("to-xml").toXML;
+const toXML = require("to-xml").toXML;
 ```
 
 Browser:
 
 ```html
-<script src="https://rawgit.com/kawanet/to-xml/master/dist/to-xml.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/to-xml/dist/to-xml.min.js"></script>
 ```
 
 Run:
 
 ```js
-var data = {
+const data = {
   "xml": {
     "@foo": "FOO",
     "bar": {
@@ -36,7 +38,7 @@ var data = {
   }
 };
 
-var xml = toXML(data, null, 2);
+const xml = toXML(data, null, 2);
 
 console.warn(xml);
 ```
@@ -220,29 +222,18 @@ $ echo '{"foo":{"@bar":"BAR","buz":"BUZ"}}' | ./node_modules/.bin/json2xml -2
 </foo>
 ```
 
-## SEE ALSO
+## LINKS
 
-### NPM
-
-- [https://www.npmjs.com/package/from-xml](https://www.npmjs.com/package/from-xml) - XML Parser
-- [https://www.npmjs.com/package/to-xml](https://www.npmjs.com/package/to-xml) - XML Writer
-- [https://www.npmjs.com/package/xml-objtree](https://www.npmjs.com/package/xml-objtree)
-
-### GitHub
-
-- [https://github.com/kawanet/to-xml](https://github.com/kawanet/to-xml)
-
-### Tests
-
-- [https://kawanet.github.io/from-xml/](https://kawanet.github.io/from-xml/)
-- [https://travis-ci.org/kawanet/to-xml](https://travis-ci.org/kawanet/to-xml)
-- [https://rawgit.com/kawanet/to-xml/master/test/test.html](https://rawgit.com/kawanet/to-xml/master/test/test.html)
+- https://github.com/kawanet/to-xml
+- https://www.npmjs.com/package/from-xml
+- https://www.npmjs.com/package/to-xml
+- https://www.npmjs.com/package/xml-objtree
 
 ## LICENSE
 
 The MIT License (MIT)
 
-Copyright (c) 2016 Yusuke Kawasaki
+Copyright (c) 2016-2021 Yusuke Kawasaki
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
