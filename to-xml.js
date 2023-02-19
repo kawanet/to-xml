@@ -13,9 +13,8 @@
  * @returns {String}
  */
 
-var toXML;
-
-(function(exports) {
+/* exported toXML */
+var toXML = (function(exports) {
 
   var TYPES = {
     "boolean": fromString,
@@ -43,7 +42,7 @@ var toXML;
 
   var REPLACE = String.prototype.replace;
 
-  exports.toXML = toXML = _toXML;
+  return (exports.toXML = _toXML);
 
   function _toXML(value, replacer, space) {
     var job = createJob(replacer, space);
