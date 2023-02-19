@@ -7,7 +7,7 @@ DIST=./dist
 JSDEST=./dist/to-xml.min.js
 JSGZIP=./dist/to-xml.min.js.gz
 
-all: test $(JSGZIP)
+all: $(JSDEST) $(JSGZIP)
 
 clean:
 	rm -fr $(DIST)

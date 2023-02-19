@@ -2,6 +2,7 @@
 
 [![Node.js CI](https://github.com/kawanet/to-xml/workflows/Node.js%20CI/badge.svg?branch=main)](https://github.com/kawanet/to-xml/actions/)
 [![npm version](https://badge.fury.io/js/to-xml.svg)](https://www.npmjs.com/package/to-xml)
+[![gzip size](https://img.badgesize.io/https://unpkg.com/to-xml/dist/to-xml.min.js?compression=gzip)](https://unpkg.com/to-xml/dist/to-xml.min.js)
 
 **Live Demo: [https://kawanet.github.io/from-xml/](https://kawanet.github.io/from-xml/)**
 
