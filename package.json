@@ -1,7 +1,7 @@
 {
   "name": "to-xml",
   "description": "toXML - Pure JavaScript XML Writer",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "author": "Yusuke Kawasaki <u-suke@kawa.net>",
   "bin": {
     "json2xml": "./bin/json2xml.cli.js"
@@ -14,6 +14,10 @@
     "jshint": "^2.13.6",
     "mocha": "^10.2.0",
     "terser": "^5.16.4"
+  },
+  "exports": {
+    "require": "./to-xml.js",
+    "import": "./dist/to-xml.mjs"
   },
   "files": [
     "*.d.ts",
@@ -40,8 +44,8 @@
     "xml"
   ],
   "license": "MIT",
-  "main": "to-xml.js",
-  "module": "dist/to-xml.mjs",
+  "main": "./to-xml.js",
+  "module": "./dist/to-xml.mjs",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kawanet/to-xml.git"
