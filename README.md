@@ -15,10 +15,16 @@
 
 ## SYNOPSIS
 
+ES Module:
+
+```js
+import {toXML} from "to-xml";
+```
+
 Node.js:
 
 ```js
-const toXML = require("to-xml").toXML;
+const {toXML} = require("to-xml");
 ```
 
 Browser:
