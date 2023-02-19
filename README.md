@@ -2,6 +2,7 @@
 
 [![Node.js CI](https://github.com/kawanet/to-xml/workflows/Node.js%20CI/badge.svg?branch=main)](https://github.com/kawanet/to-xml/actions/)
 [![npm version](https://badge.fury.io/js/to-xml.svg)](https://www.npmjs.com/package/to-xml)
+[![gzip size](https://img.badgesize.io/https://unpkg.com/to-xml/dist/to-xml.min.js?compression=gzip)](https://unpkg.com/to-xml/dist/to-xml.min.js)
 
 **Live Demo: [https://kawanet.github.io/from-xml/](https://kawanet.github.io/from-xml/)**
 
@@ -233,7 +234,7 @@ $ echo '{"foo":{"@bar":"BAR","buz":"BUZ"}}' | ./node_modules/.bin/json2xml -2
 
 The MIT License (MIT)
 
-Copyright (c) 2016-2021 Yusuke Kawasaki
+Copyright (c) 2016-2023 Yusuke Kawasaki
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

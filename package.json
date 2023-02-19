@@ -1,7 +1,7 @@
 {
   "name": "to-xml",
   "description": "toXML - Pure JavaScript XML Writer",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "author": "Yusuke Kawasaki <u-suke@kawa.net>",
   "bin": {
     "json2xml": "./bin/json2xml.cli.js"
@@ -10,10 +10,10 @@
     "url": "https://github.com/kawanet/to-xml/issues"
   },
   "devDependencies": {
-    "chai": "^4.3.4",
-    "jshint": "^2.12.0",
-    "mocha": "^8.3.2",
-    "terser": "^5.7.0"
+    "chai": "^4.3.7",
+    "jshint": "^2.13.6",
+    "mocha": "^10.2.0",
+    "terser": "^5.16.4"
   },
   "files": [
     "*.d.ts",
@@ -21,12 +21,13 @@
     "LICENSE",
     "README.md",
     "bin/*.js",
-    "dist/*.js",
+    "dist/*.min.js",
+    "dist/*.mjs",
     "package.json"
   ],
   "homepage": "https://github.com/kawanet/to-xml#readme",
   "jshintConfig": {
-    "es3": true,
+    "esversion": 6,
     "node": true,
     "undef": true,
     "unused": true
@@ -40,6 +41,7 @@
   ],
   "license": "MIT",
   "main": "to-xml.js",
+  "module": "dist/to-xml.mjs",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kawanet/to-xml.git"
@@ -48,8 +50,10 @@
     "build": "make",
     "clean": "make clean",
     "fixpack": "fixpack",
+    "prepack": "make clean all test",
     "test": "make test",
-    "test-watch": "while :; do make test; sleep 1; done"
+    "test-browser": "make && open test/test.html"
   },
+  "type": "commonjs",
   "types": "to-xml.d.ts"
 }

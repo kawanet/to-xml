@@ -13,18 +13,17 @@
  * @returns {String}
  */
 
-var toXML;
+/* exported toXML */
+var toXML = (function(exports) {
 
-(function(exports) {
-
-  var TYPES = {
+  const TYPES = {
     "boolean": fromString,
     "number": fromString,
     "object": fromObject,
     "string": fromString
   };
 
-  var ESCAPE = {
+  const ESCAPE = {
     "\t": "&#x09;",
     "\n": "&#x0a;",
     "\r": "&#x0d;",
@@ -35,24 +34,24 @@ var toXML;
     '"': "&quot;"
   };
 
-  var ATTRIBUTE_KEY = "@";
-  var CHILD_NODE_KEY = "#";
-  var LF = "\n";
+  const ATTRIBUTE_KEY = "@";
+  const CHILD_NODE_KEY = "#";
+  const LF = "\n";
 
-  var isArray = Array.isArray || _isArray;
+  const isArray = Array.isArray || _isArray;
 
-  var REPLACE = String.prototype.replace;
+  const REPLACE = String.prototype.replace;
 
-  exports.toXML = toXML = _toXML;
+  return (exports.toXML = _toXML);
 
   function _toXML(value, replacer, space) {
-    var job = createJob(replacer, space);
+    const job = createJob(replacer, space);
     fromAny(job, "", value);
     return job.r;
   }
 
   function createJob(replacer, space) {
-    var job = {
+    const job = {
       f: replacer, // replacer function
       // s: "", // indent string
       // i: 0, // indent string length
@@ -61,10 +60,10 @@ var toXML;
     };
 
     if (space) {
-      var str = "";
+      let str = "";
 
       if (space > 0) {
-        for (var i = space; i; i--) {
+        for (let i = space; i; i--) {
           str += " ";
         }
       } else {
@@ -85,10 +84,10 @@ var toXML;
 
     if (_isArray(value)) return fromArray(job, key, value);
 
-    var replacer = job.f;
+    const replacer = job.f;
     if (replacer) value = replacer(key, value);
 
-    var f = TYPES[typeof value];
+    const f = TYPES[typeof value];
     if (f) f(job, key, value);
   }
 
@@ -122,21 +121,21 @@ var toXML;
 
   function fromObject(job, key, value) {
     // empty tag
-    var hasTag = !!key;
-    var closeTag = (value === null);
+    const hasTag = !!key;
+    const closeTag = (value === null);
     if (closeTag) {
       if (!hasTag) return;
       value = {};
     }
 
-    var keys = Object.keys(value);
-    var keyLength = keys.length;
-    var attrs = keys.filter(isAttribute);
-    var attrLength = attrs.length;
-    var hasIndent = job.i;
-    var curIndent = job.l;
-    var willIndent = hasTag && hasIndent;
-    var didIndent;
+    const keys = Object.keys(value);
+    const keyLength = keys.length;
+    const attrs = keys.filter(isAttribute);
+    const attrLength = attrs.length;
+    const hasIndent = job.i;
+    const curIndent = job.l;
+    let willIndent = hasTag && hasIndent;
+    let didIndent;
 
     // open tag
     if (hasTag) {
@@ -152,9 +151,9 @@ var toXML;
       });
 
       // empty element
-      var isEmpty = closeTag || (attrLength && keyLength === attrLength);
+      const isEmpty = closeTag || (attrLength && keyLength === attrLength);
       if (isEmpty) {
-        var firstChar = key[0];
+        const firstChar = key[0];
         if (firstChar !== "!" && firstChar !== "?") {
           job.r += "/";
         }
@@ -208,7 +207,7 @@ var toXML;
   }
 
   function writeAttribute(job, key, val) {
-    var replacer = job.f;
+    const replacer = job.f;
     if (replacer) val = replacer(ATTRIBUTE_KEY + key, val);
     if ("undefined" === typeof val) return;
 
