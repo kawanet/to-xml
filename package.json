@@ -1,7 +1,7 @@
 {
   "name": "to-xml",
   "description": "toXML - Pure JavaScript XML Writer",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "author": "Yusuke Kawasaki <u-suke@kawa.net>",
   "bin": {
     "json2xml": "./bin/json2xml.cli.js"
@@ -13,11 +13,14 @@
     "chai": "^4.3.7",
     "jshint": "^2.13.6",
     "mocha": "^10.2.0",
-    "terser": "^5.16.4"
+    "terser": "^5.19.2"
   },
   "exports": {
     "require": "./to-xml.js",
-    "import": "./dist/to-xml.mjs"
+    "import": {
+      "default": "./dist/to-xml.mjs",
+      "types": "./to-xml.d.ts"
+    }
   },
   "files": [
     "*.d.ts",
