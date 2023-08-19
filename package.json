@@ -17,7 +17,10 @@
   },
   "exports": {
     "require": "./to-xml.js",
-    "import": "./dist/to-xml.mjs"
+    "import": {
+      "default": "./dist/to-xml.mjs",
+      "types": "./to-xml.d.ts"
+    }
   },
   "files": [
     "*.d.ts",
