@@ -13,7 +13,7 @@
     "chai": "^4.3.7",
     "jshint": "^2.13.6",
     "mocha": "^10.2.0",
-    "terser": "^5.16.4"
+    "terser": "^5.19.2"
   },
   "exports": {
     "require": "./to-xml.js",
